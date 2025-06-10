@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+DIR=$(cd "$(dirname "$0")" && pwd)
+
 echo "▶ Installing required packages..."
 REQUIRED=(brightnessctl alsa-utils)
 MISSING=()
@@ -42,16 +44,16 @@ KEY="custom-keybindings"
 
 # Define shortcuts (name, command, key, ID suffix)
 SHORTCUTS=(
-  "Brightness Up:::brightnessctl set +5%:::KP_Add:::custom0"
-  "Brightness Down:::brightnessctl set 5%-:::KP_Subtract:::custom1"
-  "Volume Up:::amixer -D pulse sset Master 5%+:::KP_Multiply:::custom2"
-  "Volume Down:::amixer -D pulse sset Master 5%-:::KP_Divide:::custom3"
+  "Brightness Up@brightnessctl set +5%@KP_Add@custom0"
+  "Brightness Down@brightnessctl set 5%-@KP_Subtract@custom1"
+  "Volume Up@amixer -D pulse sset Master 5%+@KP_Multiply@custom2"
+  "Volume Down@amixer -D pulse sset Master 5%-@KP_Divide@custom3"
 )
 
 # Collect all binding paths to set in custom-keybindings array
 BINDING_PATHS=()
 for ENTRY in "${SHORTCUTS[@]}"; do
-  IFS=":::" read -r NAME CMD KEYBIND ID <<< "$ENTRY"
+  IFS="@" read -r NAME CMD KEYBIND ID <<< "$ENTRY"
   BINDING="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/$ID/"
   BINDING_PATHS+=("'$BINDING'")
 
@@ -72,8 +74,8 @@ echo "✓ GNOME shortcuts registered."
 echo "▶ Deploying mpv input.conf..."
 
 mkdir -p "$HOME/.config/mpv"
-cp -v mpv/input.conf "$HOME/.config/mpv/"
-cp -v mpv/mpv.conf "$HOME/.config/mpv/"
+cp -vf "$DIR/mpv/input.conf" "$HOME/.config/mpv/"
+cp -vf "$DIR/mpv/mpv.conf" "$HOME/.config/mpv/"
 
 echo "✓ mpv configuration deployed."
 
