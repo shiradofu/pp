@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=xbindkeys
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Start xbindkeys
+Comment=Launch xbindkeys on login to enable custom key-bindings
